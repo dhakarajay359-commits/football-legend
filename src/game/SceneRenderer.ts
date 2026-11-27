@@ -195,7 +195,8 @@ export class SceneRenderer {
     container.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.5, 320);
+    this.camera = new THREE.PerspectiveCamera(40, container.clientWidth / Math.max(1, container.clientHeight), 0.5, 320);
+    this.syncCameraProjection(container.clientWidth, container.clientHeight);
     this.camera.position.copy(this.camPos);
 
     // Ball + Shadow
@@ -231,11 +232,18 @@ export class SceneRenderer {
     window.addEventListener('resize', this.onResize);
   }
 
+  private syncCameraProjection(width: number, height: number) {
+    const aspect = width / Math.max(1, height);
+    this.camera.aspect = aspect;
+    // Widen vertical FOV in portrait mode so the full pitch width remains visible on mobile phones
+    this.camera.fov = aspect < 1 ? Math.min(66, 40 + (1 - aspect) * 42) : 40;
+    this.camera.updateProjectionMatrix();
+  }
+
   private onResize = () => {
     const parent = this.renderer.domElement.parentElement;
     if (!parent) return;
-    this.camera.aspect = parent.clientWidth / parent.clientHeight;
-    this.camera.updateProjectionMatrix();
+    this.syncCameraProjection(parent.clientWidth, parent.clientHeight);
     this.renderer.setSize(parent.clientWidth, parent.clientHeight);
   };
 

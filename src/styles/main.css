@@ -22,10 +22,12 @@
 html, body, #app {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   background: var(--bg-dark);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .display-font {
@@ -453,19 +455,20 @@ html, body, #app {
 input, select { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); color: var(--text); padding: 9px 12px; border-radius: 8px; font-size: 14px; width: 100%; }
 
 /* In-Game 3D Match Viewport & HUD */
-.match-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
-.hud-overlay { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 24px; }
+.match-container { position: relative; width: 100%; height: 100%; height: 100dvh; overflow: hidden; touch-action: none; }
+.hud-overlay { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 24px; touch-action: none; }
 .scoreboard { display: inline-flex; align-items: center; gap: 12px; background: rgba(8, 13, 28, 0.88); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 8px 18px; font-weight: 800; font-size: 18px; backdrop-filter: blur(8px); }
 .score-num { background: var(--accent); color: #03101f; padding: 2px 10px; border-radius: 6px; font-size: 20px; }
 .clock-pill { background: #0f172a; color: var(--gold); padding: 4px 10px; border-radius: 6px; font-variant-numeric: tabular-nums; }
 .hud-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.hud-spacer { width: 240px; }
 .player-bar { background: rgba(8, 13, 28, 0.85); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; min-width: 240px; }
 .stamina-track { height: 6px; background: rgba(255, 255, 255, 0.15); border-radius: 99px; margin-top: 6px; overflow: hidden; }
 .stamina-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #00e5ff); transition: width 0.1s; }
 .radar-canvas { background: rgba(15, 38, 22, 0.82); border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 8px; }
-.goal-banner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(34, 197, 94, 0.95)); color: #021324; padding: 18px 48px; border-radius: 16px; font-size: 64px; font-weight: 900; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); }
+.goal-banner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(34, 197, 94, 0.95)); color: #021324; padding: 18px 48px; border-radius: 16px; font-size: 64px; font-weight: 900; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); text-align: center; max-width: 90vw; }
 
-.touch-controls { position: absolute; inset: 0; pointer-events: none; }
+.touch-controls { position: absolute; inset: 0; pointer-events: none; touch-action: none; }
 .joystick-zone {
   position: absolute; left: 32px; bottom: 86px; width: 126px; height: 126px;
   border-radius: 50%; background: rgba(255, 255, 255, 0.12);
@@ -482,8 +485,15 @@ input, select { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--borde
   position: absolute; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.55);
   background: rgba(15, 23, 42, 0.52); backdrop-filter: blur(6px);
   color: #fff; font-weight: 800; font-size: 13px; line-height: 1.15;
-  cursor: pointer; pointer-events: auto; transition: transform 0.08s ease, background 0.08s ease;
+  cursor: pointer; pointer-events: auto; touch-action: none;
+  transition: transform 0.08s ease, background 0.08s ease;
 }
+.btn-shoot { right: 20px; bottom: 138px; width: 78px; height: 78px; }
+.btn-through { right: 114px; bottom: 114px; width: 70px; height: 70px; }
+.btn-pass { right: 138px; bottom: 24px; width: 72px; height: 72px; }
+.btn-sprint { right: 30px; bottom: 28px; width: 82px; height: 82px; }
+.btn-tackle { right: 224px; bottom: 24px; width: 56px; height: 56px; font-size: 10px; }
+.btn-switch { right: 214px; bottom: 94px; width: 56px; height: 56px; font-size: 10px; }
 .arc-shoot { border-color: #ef4444; background: rgba(185, 28, 28, 0.45); }
 .arc-through { border-color: #eab308; background: rgba(161, 98, 7, 0.45); }
 .arc-pass { border-color: #38bdf8; background: rgba(3, 105, 161, 0.45); }
@@ -498,4 +508,58 @@ input, select { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--borde
   .legends-body { flex-direction: column; align-items: stretch; }
   .legends-right-col { align-items: stretch; width: 100%; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .matchup-banner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+}
+
+@media (max-width: 768px) {
+  .legends-home { padding: 14px 16px; }
+  .legends-topbar { flex-wrap: wrap; gap: 12px; }
+  .legends-title { font-size: 38px; }
+  .legends-subtitle { font-size: 10px; letter-spacing: 0.24em; }
+  .legends-profile-bar { flex-wrap: wrap; gap: 8px; }
+  .legends-pill { padding: 5px 10px; font-size: 12px; }
+  .legends-nav-col { width: 100%; }
+  .legends-bottom-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .dock-group { flex-wrap: wrap; justify-content: center; }
+
+  .top-bar { flex-wrap: wrap; gap: 10px; padding: 12px 14px; }
+  .profile-pill { flex-wrap: wrap; gap: 10px; padding: 6px 12px; font-size: 12px; }
+  .menu-content { padding: 16px 14px; }
+  .panel { padding: 14px; }
+  .fut-card { width: 104px; padding: 8px; }
+
+  .hud-overlay { padding: 10px 12px; }
+  .scoreboard { padding: 5px 10px !important; gap: 6px !important; font-size: 13px; }
+  .score-num { padding: 1px 7px; font-size: 14px; }
+  .clock-pill { padding: 2px 6px; font-size: 12px !important; }
+  .hud-spacer { display: none; }
+  .hud-bottom { align-items: flex-start; margin-bottom: 158px; }
+  .player-bar { min-width: 128px; padding: 6px 10px; font-size: 12px; }
+  .radar-canvas { width: 112px; height: 68px; }
+  .goal-banner { font-size: 38px; padding: 12px 26px; }
+
+  .joystick-zone { left: 14px; bottom: 18px; width: 100px; height: 100px; }
+  .joystick-knob { width: 42px; height: 42px; }
+  .arc-btn { font-size: 11px; border-width: 2px; }
+  .btn-shoot { right: 12px; bottom: 108px; width: 60px; height: 60px; }
+  .btn-through { right: 82px; bottom: 92px; width: 54px; height: 54px; font-size: 10px; }
+  .btn-pass { right: 98px; bottom: 20px; width: 56px; height: 56px; }
+  .btn-sprint { right: 16px; bottom: 22px; width: 64px; height: 64px; font-size: 10px; }
+  .btn-tackle { right: 162px; bottom: 20px; width: 46px; height: 46px; font-size: 9px; }
+  .btn-switch { right: 154px; bottom: 76px; width: 46px; height: 46px; font-size: 9px; }
+}
+
+@media (max-height: 520px) {
+  .hud-overlay { padding: 8px 14px; }
+  .hud-spacer { display: none; }
+  .hud-bottom { display: none; }
+  .joystick-zone { left: 16px; bottom: 16px; width: 98px; height: 98px; }
+  .joystick-knob { width: 40px; height: 40px; }
+  .arc-btn { font-size: 11px; border-width: 2px; }
+  .btn-shoot { right: 14px; bottom: 102px; width: 58px; height: 58px; }
+  .btn-through { right: 82px; bottom: 88px; width: 52px; height: 52px; font-size: 10px; }
+  .btn-pass { right: 96px; bottom: 16px; width: 54px; height: 54px; }
+  .btn-sprint { right: 16px; bottom: 18px; width: 62px; height: 62px; font-size: 10px; }
+  .btn-tackle { right: 158px; bottom: 16px; width: 46px; height: 46px; font-size: 9px; }
+  .btn-switch { right: 150px; bottom: 72px; width: 46px; height: 46px; font-size: 9px; }
 }

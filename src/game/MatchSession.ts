@@ -174,7 +174,7 @@ export class MatchSession {
           <div class="stamina-track"><div class="stamina-fill" id="hud-stamina" style="width:100%;"></div></div>
         </div>
         <canvas class="radar-canvas" id="hud-radar" width="190" height="115"></canvas>
-        <div style="width:240px;"></div>
+        <div class="hud-spacer"></div>
       </div>
     `;
     viewport.appendChild(hud);
@@ -275,45 +275,68 @@ export class MatchSession {
         <div class="joystick-knob" id="touch-knob"></div>
       </div>
       <div class="action-arc">
-        <button class="arc-btn arc-shoot" data-act="shoot" style="right:20px; bottom:138px; width:78px; height:78px;">Shoot</button>
-        <button class="arc-btn arc-through" data-act="through" style="right:114px; bottom:114px; width:70px; height:70px;">Through</button>
-        <button class="arc-btn arc-pass" data-act="pass" style="right:138px; bottom:24px; width:72px; height:72px;">Pass</button>
-        <button class="arc-btn arc-sprint" id="btn-sprint" style="right:30px; bottom:28px; width:82px; height:82px;">Sprint<br/>&amp; Skill</button>
-        <button class="arc-btn" data-act="tackle" style="right:224px; bottom:24px; width:56px; height:56px; font-size:10px;">Tackle</button>
-        <button class="arc-btn" data-act="switch" style="right:214px; bottom:94px; width:56px; height:56px; font-size:10px;">Switch</button>
+        <button class="arc-btn arc-shoot btn-shoot" data-act="shoot">Shoot</button>
+        <button class="arc-btn arc-through btn-through" data-act="through">Through</button>
+        <button class="arc-btn arc-pass btn-pass" data-act="pass">Pass</button>
+        <button class="arc-btn arc-sprint btn-sprint" id="btn-sprint">Sprint<br/>&amp; Skill</button>
+        <button class="arc-btn btn-tackle" data-act="tackle">Tackle</button>
+        <button class="arc-btn btn-switch" data-act="switch">Switch</button>
       </div>
     `;
     viewport.appendChild(tc);
 
     const joy = tc.querySelector('#touch-joy') as HTMLElement;
     const knob = tc.querySelector('#touch-knob') as HTMLElement;
-    let activeTouch = false;
+    let joyPointerId: number | null = null;
     const handleMove = (cx: number, cy: number) => {
       const rect = joy.getBoundingClientRect();
       const dx = cx - (rect.left + rect.width / 2);
       const dy = cy - (rect.top + rect.height / 2);
-      const maxR = rect.width / 2;
+      const maxR = Math.max(1, rect.width / 2);
       const clampedX = Math.max(-1, Math.min(1, dx / maxR));
       const clampedZ = Math.max(-1, Math.min(1, dy / maxR));
       this.input.touchMoveX = clampedX;
       this.input.touchMoveZ = clampedZ;
-      knob.style.transform = `translate(${clampedX * 34}px, ${clampedZ * 34}px)`;
+      const knobTravel = rect.width * 0.27;
+      knob.style.transform = `translate(${clampedX * knobTravel}px, ${clampedZ * knobTravel}px)`;
     };
-    joy.addEventListener('pointerdown', (e) => { activeTouch = true; handleMove(e.clientX, e.clientY); });
-    window.addEventListener('pointermove', (e) => { if (activeTouch) handleMove(e.clientX, e.clientY); });
-    window.addEventListener('pointerup', () => {
-      activeTouch = false;
+    const resetJoy = (pointerId: number) => {
+      if (joyPointerId !== pointerId) return;
+      joyPointerId = null;
       this.input.touchMoveX = 0;
       this.input.touchMoveZ = 0;
       knob.style.transform = 'translate(0px, 0px)';
+    };
+    joy.addEventListener('pointerdown', (e) => {
+      if (joyPointerId !== null) return;
+      joyPointerId = e.pointerId;
+      try { joy.setPointerCapture(e.pointerId); } catch {}
+      handleMove(e.clientX, e.clientY);
     });
+    joy.addEventListener('pointermove', (e) => {
+      if (joyPointerId === e.pointerId) handleMove(e.clientX, e.clientY);
+    });
+    joy.addEventListener('pointerup', (e) => resetJoy(e.pointerId));
+    joy.addEventListener('pointercancel', (e) => resetJoy(e.pointerId));
 
     const sprintBtn = tc.querySelector('#btn-sprint') as HTMLElement;
-    sprintBtn.addEventListener('pointerdown', () => { this.input.touchSprint = true; });
-    window.addEventListener('pointerup', () => { this.input.touchSprint = false; });
+    let sprintPointerId: number | null = null;
+    const resetSprint = (pointerId: number) => {
+      if (sprintPointerId !== pointerId) return;
+      sprintPointerId = null;
+      this.input.touchSprint = false;
+    };
+    sprintBtn.addEventListener('pointerdown', (e) => {
+      sprintPointerId = e.pointerId;
+      try { sprintBtn.setPointerCapture(e.pointerId); } catch {}
+      this.input.touchSprint = true;
+    });
+    sprintBtn.addEventListener('pointerup', (e) => resetSprint(e.pointerId));
+    sprintBtn.addEventListener('pointercancel', (e) => resetSprint(e.pointerId));
 
     tc.querySelectorAll('[data-act]').forEach((btn) => {
-      btn.addEventListener('pointerdown', () => {
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
         this.input.triggerTouchAction((btn as HTMLElement).dataset.act!);
       });
     });
