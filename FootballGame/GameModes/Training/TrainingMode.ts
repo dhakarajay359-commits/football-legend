@@ -1,0 +1,1 @@
+export const TRAINING_DRILLS = ["free_practice", "dribbling_course", "passing_practice", "shooting_practice", "penalty_practice", "free_kick_practice", "gk_training", "tackling_practice", "skill_tutorial", "sprint_stamina"];
