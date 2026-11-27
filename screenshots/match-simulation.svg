@@ -1,0 +1,133 @@
+<svg width="860" height="440" viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="turf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1f5918"/><stop offset="10%" stop-color="#276b1f"/>
+      <stop offset="20%" stop-color="#1f5918"/><stop offset="30%" stop-color="#276b1f"/>
+      <stop offset="40%" stop-color="#1f5918"/><stop offset="50%" stop-color="#276b1f"/>
+      <stop offset="60%" stop-color="#1f5918"/><stop offset="70%" stop-color="#276b1f"/>
+      <stop offset="80%" stop-color="#1f5918"/><stop offset="90%" stop-color="#276b1f"/>
+      <stop offset="100%" stop-color="#1f5918"/>
+    </linearGradient>
+    <linearGradient id="stadiumTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#040816"/><stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    @keyframes passBall {
+      0%   { transform: translate(310px, 240px); }
+      25%  { transform: translate(470px, 185px); }
+      50%  { transform: translate(630px, 235px); }
+      72%  { transform: translate(785px, 212px); }
+      88%  { transform: translate(792px, 212px); }
+      100% { transform: translate(310px, 240px); }
+    }
+    @keyframes strikerRun {
+      0%   { transform: translate(520px, 250px); }
+      45%  { transform: translate(625px, 235px); }
+      75%  { transform: translate(655px, 230px); }
+      100% { transform: translate(520px, 250px); }
+    }
+    @keyframes midRun {
+      0%   { transform: translate(430px, 190px); }
+      30%  { transform: translate(470px, 185px); }
+      100% { transform: translate(430px, 190px); }
+    }
+    @keyframes defRun {
+      0%   { transform: translate(640px, 200px); }
+      50%  { transform: translate(670px, 225px); }
+      100% { transform: translate(640px, 200px); }
+    }
+    @keyframes gkDive {
+      0%, 55% { transform: translate(765px, 235px); }
+      72%, 88% { transform: translate(765px, 255px); }
+      100% { transform: translate(765px, 235px); }
+    }
+    @keyframes goalPop {
+      0%, 68% { opacity: 0; transform: scale(0.7); }
+      74%, 90% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.7); }
+    }
+    .ball { animation: passBall 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+    .striker { animation: strikerRun 5.5s ease-in-out infinite; }
+    .mid { animation: midRun 5.5s ease-in-out infinite; }
+    .def { animation: defRun 5.5s ease-in-out infinite; }
+    .gk { animation: gkDive 5.5s ease-in-out infinite; }
+    .goal-banner { transform-origin: 430px 220px; animation: goalPop 5.5s ease-out infinite; }
+  </style>
+
+  <!-- Stadium Background & Crowd -->
+  <rect width="860" height="440" rx="14" fill="url(#stadiumTop)"/>
+  <rect x="20" y="68" width="820" height="352" rx="8" fill="url(#turf)" stroke="#ffffff" stroke-width="2.5"/>
+
+  <!-- LED Perimeter Board -->
+  <rect x="20" y="48" width="820" height="18" rx="3" fill="#1d4ed8"/>
+  <text x="430" y="61" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="11" fill="#ffffff" letter-spacing="4">FOOTBALL LEGENDS  •  LIVE 3D MATCH SIMULATION  •  60HZ ENGINE</text>
+
+  <!-- Pitch Markings -->
+  <line x1="430" y1="68" x2="430" y2="420" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+  <circle cx="430" cy="244" r="56" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+  <circle cx="430" cy="244" r="4" fill="#ffffff"/>
+  <rect x="20" y="144" width="115" height="200" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+  <rect x="725" y="144" width="115" height="200" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
+  <!-- Goals -->
+  <rect x="6" y="198" width="14" height="92" fill="rgba(255,255,255,0.18)" stroke="#ffffff" stroke-width="2.5"/>
+  <rect x="840" y="198" width="14" height="92" fill="rgba(255,255,255,0.18)" stroke="#ffffff" stroke-width="2.5"/>
+  <path d="M 780 198 L 800 198 L 800 290 L 780 290" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="4 3"/>
+
+  <!-- Scoreboard HUD -->
+  <rect x="24" y="12" width="230" height="28" rx="6" fill="rgba(8,13,28,0.92)" stroke="rgba(255,255,255,0.2)"/>
+  <text x="42" y="30" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#facc15">25'</text>
+  <text x="82" y="30" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#ffffff">MAD</text>
+  <rect x="122" y="16" width="22" height="20" rx="4" fill="#f8fafc"/>
+  <text x="133" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#0f172a">1</text>
+  <text x="152" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#94a3b8">-</text>
+  <rect x="160" y="16" width="22" height="20" rx="4" fill="#f8fafc"/>
+  <text x="171" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#0f172a">0</text>
+  <text x="194" y="30" font-family="system-ui, sans-serif" font-weight="900" font-size="13" fill="#38bdf8">MNC</text>
+
+  <!-- Home Players (White/Gold) -->
+  <g transform="translate(305, 240)">
+    <circle r="14" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.5"/>
+    <circle r="9" fill="#f8fafc" stroke="#d4af37" stroke-width="2.5"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#0f172a">8</text>
+  </g>
+  <g class="mid">
+    <circle r="14" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.5"/>
+    <circle r="9" fill="#f8fafc" stroke="#d4af37" stroke-width="2.5"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#0f172a">10</text>
+  </g>
+  <g class="striker">
+    <circle r="16" fill="none" stroke="#facc15" stroke-width="2.5"/>
+    <circle r="10" fill="#f8fafc" stroke="#d4af37" stroke-width="2.5"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#0f172a">9</text>
+    <text y="-19" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="10" fill="#facc15">▼ K. Moreau</text>
+  </g>
+
+  <!-- Away Defenders & GK (Sky Blue) -->
+  <g class="def">
+    <circle r="14" fill="none" stroke="#ef4444" stroke-width="2" opacity="0.6"/>
+    <circle r="9" fill="#60a5fa" stroke="#ffffff" stroke-width="2"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#0f172a">4</text>
+  </g>
+  <g transform="translate(560, 310)">
+    <circle r="9" fill="#60a5fa" stroke="#ffffff" stroke-width="2"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#0f172a">6</text>
+  </g>
+  <g class="gk">
+    <circle r="10" fill="#a855f7" stroke="#ffffff" stroke-width="2"/>
+    <text y="3" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="9" fill="#ffffff">1</text>
+  </g>
+
+  <!-- Animated Football -->
+  <g class="ball">
+    <circle r="6.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+    <circle r="2.2" fill="#0f172a"/>
+  </g>
+
+  <!-- GOAL! Flash Banner -->
+  <g class="goal-banner">
+    <rect x="330" y="185" width="200" height="58" rx="12" fill="#00e5ff" stroke="#facc15" stroke-width="3"/>
+    <text x="430" y="224" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="34" fill="#040816">GOAL!</text>
+  </g>
+</svg>

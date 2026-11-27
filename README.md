@@ -2,6 +2,9 @@
 
 ![Football Legends Home Screen](./screenshots/home-screen.jpg)
 
+### 🎥 Live Match Simulation Preview
+![Football Legends Match Simulation](./screenshots/match-simulation.svg)
+
 A real-time 3D football simulation game built with **Three.js**, **TypeScript**, **Node.js**, **WebSockets**, **SQLite**, and **Blender 3D** character assets—plus a modular **Unity 6 (URP + Photon Fusion 2 + PlayFab)** project structure under `UnityFootballGame/`.
 
 ## Features
