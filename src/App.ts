@@ -458,9 +458,9 @@ export class App {
 
     body.innerHTML = `
       <div class="panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h2 class="display-font" style="font-size:38px;">${localTwoPlayer ? 'Local 2-Player Match' : 'Quick Match Setup'}</h2>
-          <div style="display:flex; gap:10px; align-items:center;">
+        <div class="setup-header">
+          <h2 class="display-font" style="font-size:38px; line-height:1;">${localTwoPlayer ? 'Local 2-Player Match' : 'Quick Match Setup'}</h2>
+          <div class="setup-actions">
             <button class="btn btn-secondary" id="launch-5v5">Play 5v5 Rush</button>
             <button class="btn btn-gold" id="launch-match">Kick Off 11v11 →</button>
           </div>

@@ -184,11 +184,12 @@ export class SceneRenderer {
   private camTarget = new THREE.Vector3(0, 0, 0);
 
   constructor(container: HTMLElement) {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 900;
+    this.renderer = new THREE.WebGLRenderer({ antialias: !isMobile || window.devicePixelRatio <= 2, powerPreference: 'high-performance' });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = isMobile ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.95;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;

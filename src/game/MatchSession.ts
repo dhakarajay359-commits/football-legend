@@ -172,6 +172,7 @@ export class MatchSession {
         <div class="player-bar" style="border-left:4px solid ${this.config.homeTeam.badgeColor};">
           <div id="hud-player-name" style="font-weight:800; font-size:15px;">Player</div>
           <div class="stamina-track"><div class="stamina-fill" id="hud-stamina" style="width:100%;"></div></div>
+          <div class="power-track" id="hud-power-wrap" style="display:none;"><div class="power-fill" id="hud-power" style="width:0%;"></div></div>
         </div>
         <canvas class="radar-canvas" id="hud-radar" width="190" height="115"></canvas>
         <div class="hud-spacer"></div>
@@ -334,7 +335,25 @@ export class MatchSession {
     sprintBtn.addEventListener('pointerup', (e) => resetSprint(e.pointerId));
     sprintBtn.addEventListener('pointercancel', (e) => resetSprint(e.pointerId));
 
+    const shootBtn = tc.querySelector('.btn-shoot') as HTMLElement;
+    let shootPointerId: number | null = null;
+    const releaseShoot = (pointerId: number) => {
+      if (shootPointerId !== pointerId) return;
+      shootPointerId = null;
+      this.input.touchShootHeld = false;
+      this.input.triggerTouchAction('shoot');
+    };
+    shootBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      shootPointerId = e.pointerId;
+      try { shootBtn.setPointerCapture(e.pointerId); } catch {}
+      this.input.touchShootHeld = true;
+    });
+    shootBtn.addEventListener('pointerup', (e) => releaseShoot(e.pointerId));
+    shootBtn.addEventListener('pointercancel', (e) => releaseShoot(e.pointerId));
+
     tc.querySelectorAll('[data-act]').forEach((btn) => {
+      if ((btn as HTMLElement).dataset.act === 'shoot') return;
       btn.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         this.input.triggerTouchAction((btn as HTMLElement).dataset.act!);
@@ -409,6 +428,18 @@ export class MatchSession {
     if (p) {
       this.playerBarEl.textContent = `${p.number} ${p.name}`;
       this.staminaEl.style.width = `${p.stamina}%`;
+    }
+
+    const powerWrap = document.getElementById('hud-power-wrap');
+    const powerFill = document.getElementById('hud-power');
+    if (powerWrap && powerFill) {
+      const chg = this.input.getShootChargeP1();
+      if (chg > 0.02) {
+        powerWrap.style.display = 'block';
+        powerFill.style.width = `${Math.round(chg * 100)}%`;
+      } else {
+        powerWrap.style.display = 'none';
+      }
     }
 
     // Event ticker

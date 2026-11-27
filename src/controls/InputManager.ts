@@ -27,6 +27,7 @@ export class InputManager {
   public touchMoveX = 0;
   public touchMoveZ = 0;
   public touchSprint = false;
+  public touchShootHeld = false;
   private touchActions = new Set<string>();
 
   constructor() {
@@ -54,6 +55,10 @@ export class InputManager {
 
   public triggerTouchAction(action: string) {
     this.touchActions.add(action);
+  }
+
+  public getShootChargeP1(): number {
+    return this.shootChargeP1;
   }
 
   public getInput(slot: 'p1' | 'p2', dt: number): PlayerInput {
@@ -89,7 +94,7 @@ export class InputManager {
       this.touchSprint ||
       Boolean(gp && (gp.buttons[7]?.pressed || gp.buttons[5]?.pressed));
 
-    const shootHeld = this.keys.has('Space') || this.keys.has('KeyJ') || Boolean(gp && gp.buttons[2]?.pressed);
+    const shootHeld = this.keys.has('Space') || this.keys.has('KeyJ') || this.touchShootHeld || Boolean(gp && gp.buttons[2]?.pressed);
     if (shootHeld) {
       this.shootChargeP1 = Math.min(1, this.shootChargeP1 + dt * 1.4);
     }
